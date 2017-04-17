@@ -2,25 +2,31 @@ $(document).ready(function() {
   var products = [];
   console.log(products);
 
-  function writeDOM() {
+  function whichCategory() {
       window.addEventListener("click", function() {
           var fireworks = $('.fireworks');
           if (event.target.id === 'fireworks') {
               alert("I selected fireworks");
-              $.each(products, function(index, value){
-              	console.log(index);
-              	console.log(value);
-              	if(value.name === "Fireworks" && value.id === value.category){
-              		alert("Hello there!");
-              	}
-              })
-
-          } else {
+              writeFireworks();
+          } else if (event.target.id === "demolition"){
               alert("I selected demolition");
           }
       });
   }
 
+function writeFireworks(){
+    $.each(products, function(index, value){
+    console.log(index);
+    console.log(value);
+    if(value.name === "fireworks" && value.id === value.category){
+       $(".container").append("We have matches")  
+    }
+  })
+}
+
+function writeDemolition(){
+
+}
 
   var categoriesJSON = function() {
       return new Promise(function(resolve, reject) {
@@ -71,7 +77,7 @@ $(document).ready(function() {
 			data3.forEach(function(product){
 				products.push(product);
 			})
-			writeDOM();
+			whichCategory();
 		});
 	
 
