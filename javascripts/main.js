@@ -1,6 +1,8 @@
 $(document).ready(function() {
-  var products = [];
-  var category = [];
+  var myproducts = [];
+  var myProductTypes = [];
+  console.log("products", myproducts);
+  console.log("productTypes", myProductTypes);
 
   function whichCategory() {
       $('nav').on("click", function() {
@@ -33,7 +35,7 @@ function writeDemolition(){
 
 }
 
-  var categoriesJSON = function() {
+  var loadCategories = function() {
       return new Promise(function(resolve, reject) {
           $.ajax("./db/categories.json").done(function(data1) {
               resolve(data1.categories);
@@ -43,7 +45,7 @@ function writeDemolition(){
       })
   };
 
-  var typesJSON = function() {
+  var loadTypes = function() {
       return new Promise(function(resolve, reject) {
           $.ajax("./db/types.json").done(function(data2) {
               resolve(data2.types);
@@ -53,7 +55,7 @@ function writeDemolition(){
       })
   };
 
-  var productsJSON = function() {
+  var loadProducts = function() {
       return new Promise(function(resolve, reject) {
           $.ajax("./db/products.json").done(function(data3) {
               resolve(data3.products);
@@ -63,34 +65,51 @@ function writeDemolition(){
       })
   };
 
+  loadProducts().then(function (products){
+    products.forEach(function(products){
+       for(var key in products){
+         if (products.hasOwnProperty(key)) {
+      myproducts.push(products[key]);
+      }
+    }
+  });
+    whichCategory();
+});
 
-
-	categoriesJSON().then(function(data){
-		// console.log(data);
-		data.forEach(function(category){
-			products.push(category);
-			category.grouping = "category";
-		})
-			return typesJSON();
-		}).then(function(data2){
-			// console.log(data2);
-			data2.forEach(function(type){
-				products.push(type);
-				type.grouping = "type";
-			})
-			return productsJSON();
-		}).then(function(data3){
-			// console.log(data3);
-			data3.forEach(function(product){
-				for(var key in product){
-					if (product.hasOwnProperty(key)) {
-				products.push(product[key]);
-				product[key].grouping = "product";
-				}
-			}
-		})
-		whichCategory();
-	});
+  Promise.all([loadCategories(), loadTypes()])
+    .then(function(data){
+      data.forEach(function(dataLoad){
+        dataLoad.forEach(function(productTypes){
+          myProductTypes.push(productTypes)
+        });
+      });
+    });
+	// categoriesJSON().then(function(data){
+	// 	// console.log(data);
+	// 	data.forEach(function(category){
+	// 		products.push(category);
+	// 		category.grouping = "category";
+	// 	})
+	// 		return typesJSON();
+	// 	}).then(function(data2){
+	// 		// console.log(data2);
+	// 		data2.forEach(function(type){
+	// 			products.push(type);
+	// 			type.grouping = "type";
+	// 		})
+	// 		return productsJSON();
+	// 	}).then(function(data3){
+	// 		// console.log(data3);
+	// 		data3.forEach(function(product){
+	// 			for(var key in product){
+	// 				if (product.hasOwnProperty(key)) {
+	// 			products.push(product[key]);
+	// 			product[key].grouping = "product";
+	// 			}
+	// 		}
+	// 	})
+	// 	whichCategory();
+	// });
 	
 
 
