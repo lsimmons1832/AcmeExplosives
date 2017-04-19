@@ -1,25 +1,30 @@
 $(document).ready(function() {
   var products = [];
-  console.log(products);
+  var category = [];
 
   function whichCategory() {
-      window.addEventListener("click", function() {
-          var fireworks = $('.fireworks');
-          if (event.target.id === 'fireworks') {
+      $('nav').on("click", function() {
+
+          if (event.target.id === 'Fireworks') {
+          	$.each(products, function(i, val){
               alert("I selected fireworks");
+              category.push(val);
+              });
+          	console.log(category);
               writeFireworks();
-          } else if (event.target.id === "demolition"){
+          } else if (event.target.id === "Demolition"){
               alert("I selected demolition");
+              writeDemolition();
           }
       });
   }
 
 function writeFireworks(){
-    $.each(products, function(index, value){
-    console.log(index);
-    console.log(value);
-    if(value.name === "fireworks" && value.id === value.category){
-       $(".container").append("We have matches")  
+  console.log("products",products);
+    $.each(products, function(key, value){
+    if(value.grouping === "type"){
+    	console.log("I'm in!")
+       $(".container").append(`<div><h1>${value.name}</h1><p>${value.description}</p></div>`); 
     }
   })
 }
@@ -61,24 +66,31 @@ function writeDemolition(){
 
 
 	categoriesJSON().then(function(data){
-		console.log(data);
+		// console.log(data);
 		data.forEach(function(category){
 			products.push(category);
+			category.grouping = "category";
 		})
 			return typesJSON();
 		}).then(function(data2){
-			console.log(data2);
+			// console.log(data2);
 			data2.forEach(function(type){
 				products.push(type);
+				type.grouping = "type";
 			})
 			return productsJSON();
 		}).then(function(data3){
-			console.log(data3);
+			// console.log(data3);
 			data3.forEach(function(product){
-				products.push(product);
-			})
-			whichCategory();
-		});
+				for(var key in product){
+					if (product.hasOwnProperty(key)) {
+				products.push(product[key]);
+				product[key].grouping = "product";
+				}
+			}
+		})
+		whichCategory();
+	});
 	
 
 
