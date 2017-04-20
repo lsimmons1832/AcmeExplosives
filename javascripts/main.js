@@ -8,27 +8,27 @@ $(document).ready(function() {
       $('nav').on("click", function() {
 
           if (event.target.id === 'Fireworks') {
-          	$.each(products, function(i, val){
-              alert("I selected fireworks");
-              category.push(val);
-              });
-          	console.log(category);
+          	alert("I selected fireworks");
               writeFireworks();
-          } else if (event.target.id === "Demolition"){
+              } else if (event.target.id === "Demolition"){
               alert("I selected demolition");
               writeDemolition();
-          }
+          } 
+
       });
   }
 
 function writeFireworks(){
-  console.log("products",products);
-    $.each(products, function(key, value){
-    if(value.grouping === "type"){
-    	console.log("I'm in!")
-       $(".container").append(`<div><h1>${value.name}</h1><p>${value.description}</p></div>`); 
+    for(var key in myProductTypes){
+      if(myProductTypes.hasOwnProperty(key)){
+        console.log(myProductTypes);
+      }
     }
-  })
+  //   if(value.category === value.id){
+  //   	console.log("I made it past if!")
+  //      $(".container").append(`<div><h1>${value.name}</h1><p>${value.description}</p></div>`); 
+  //   }
+  // })
 }
 
 function writeDemolition(){
